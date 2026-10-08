@@ -1,5 +1,6 @@
 from sqlmodel import Field
 
+
 from app.models.base import BaseModel
 from app.enum.jobDescripStatus import JobDescripStatus
 

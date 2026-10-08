@@ -6,4 +6,5 @@ from pydantic import BaseModel
 class ResumeUploadResponse(BaseModel):
     id: UUID
     cv_name: str
+    file_name: str
     status: ResumeStatus

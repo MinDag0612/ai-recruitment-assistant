@@ -36,7 +36,7 @@ def upgrade() -> None:
     op.create_table('resume',
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('cv_name', sqlmodel.sql.sqltypes.AutoString(), nullaable=False),
+    sa.Column('cv_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('file_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('file_url', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('parsed_text', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
