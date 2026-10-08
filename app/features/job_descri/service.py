@@ -5,12 +5,14 @@ from app.features.job_descri.schema import JobDescripUploadResponse
 from app.features.storage.Storage import Storage
 
 from fastapi import UploadFile
+from uuid import UUID
 
 class JobDescriptService:
-    def __init__(self, repo: JdRepo, parser: FakeParserJD, storage: Storage):
+    def __init__(self, repo: JdRepo, parser: FakeParserJD, storage: Storage, user_id: UUID):
         self.parser = parser
         self.repo = repo
         self.storage = storage
+        self.user_id = user_id
         
     def store_jd(self, file: UploadFile, jd_name: str):
         parsed_text = self.parser.parse(file=file)
@@ -20,7 +22,8 @@ class JobDescriptService:
             jd_name=jd_name,
             file_name=file.filename,
             file_url = file_url,
-            parsed_text=parsed_text
+            parsed_text=parsed_text,
+            user_id=self.user_id
         )
         
         jd = self.repo.create(jd=jd)

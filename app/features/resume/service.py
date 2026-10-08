@@ -3,9 +3,10 @@ from app.features.resume.parser import ParserCV
 from app.models.resume import Resume
 from app.features.resume.schema import ResumeUploadResponse
 from app.features.storage.Storage import Storage
+from app.dependencies.auth import get_current_user_id
 
 from fastapi import UploadFile
-
+from uuid import UUID
 
 class ResumeService:
     def __init__(
@@ -13,10 +14,12 @@ class ResumeService:
         repository: ResumeRepository,
         parser: ParserCV,
         storage: Storage,
+        user_id: UUID
     ):
         self.repository = repository
         self.parser = parser
         self.storage = storage
+        self.user_id = user_id
     
     def store_resume(self, file: UploadFile, cv_name: str) -> Resume:
         parsed_text = self.parser.parse(file = file)
@@ -26,7 +29,8 @@ class ResumeService:
             cv_name=cv_name,
             file_name=file.filename,
             file_url=file_url,
-            parsed_text=parsed_text
+            parsed_text=parsed_text,
+            user_id=self.user_id
         )
         
         resume = self.repository.create(resume=resume)

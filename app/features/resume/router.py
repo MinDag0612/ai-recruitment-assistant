@@ -8,8 +8,13 @@ from app.features.resume.repository import ResumeRepository
 from app.features.resume.service import ResumeService
 from app.features.validation.validate_file import ValidateFile
 from app.features.storage.LocalStorage import LocalStorage
+from app.dependencies.auth import get_current_user_id
 
-router = APIRouter(prefix="/Resume", tags=["Resume"])
+router = APIRouter(
+    prefix="/Resume", 
+    tags=["Resume"], 
+    dependencies=[Depends(get_current_user_id)]
+)
 
 
 @router.post("/upload")
@@ -20,6 +25,7 @@ def upload_resume(
 ):
     service = ResumeService(
         repository=ResumeRepository(session),
+        user_id = Depends(get_current_user_id),
         parser=FakeParserCV(),
         storage=LocalStorage("resume"),
     )
