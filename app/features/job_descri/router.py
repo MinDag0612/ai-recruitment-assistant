@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, File, Form, UploadFile
 from sqlmodel import Session
 from app.features.job_descri.service import JobDescriptService
 from app.features.job_descri.repository import JdRepo
-from app.features.job_descri.parser import FakeParserJD
 from app.features.validation.validate_file import ValidateFile
 from app.features.storage.LocalStorage import LocalStorage
 from app.dependencies.auth import get_current_user_id
+from app.features.parser.parser_factory import ParserFactory
 
 from uuid import UUID
 from typing import Annotated
@@ -26,8 +26,9 @@ def upload_job_descrip(
     ):
     
     service = JobDescriptService(
+        user_id=user_id,
         repo=JdRepo(session=session), 
-        parser=FakeParserJD(),
+        parser=ParserFactory.get_factory(file=file),
         storage=LocalStorage("jd")
     )
     

@@ -1,4 +1,3 @@
-from app.features.job_descri.parser import FakeParserJD
 from app.models.job_descri import JobDescrip
 from app.features.job_descri.repository import JdRepo
 from app.features.job_descri.schema import JobDescripUploadResponse
@@ -6,22 +5,28 @@ from app.features.storage.Storage import Storage
 
 from fastapi import UploadFile
 from uuid import UUID
+from typing import Callable
 
 class JobDescriptService:
-    def __init__(self, repo: JdRepo, parser: FakeParserJD, storage: Storage, user_id: UUID):
+    def __init__(
+        self, repo: JdRepo, 
+        parser: Callable[[UploadFile], str], 
+        storage: Storage, 
+        user_id: UUID
+    ):
         self.parser = parser
         self.repo = repo
         self.storage = storage
         self.user_id = user_id
         
     def store_jd(self, file: UploadFile, jd_name: str):
-        parsed_text = self.parser.parse(file=file)
+        parsed_text = self.parser(file=file)
         file_url = self.storage.store(file=file)
         
         jd = JobDescrip(
             jd_name=jd_name,
             file_name=file.filename,
-            file_url = file_url,
+            file_url=file_url,
             parsed_text=parsed_text,
             user_id=self.user_id
         )

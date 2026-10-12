@@ -3,9 +3,9 @@ from app.features.auth.schema import RegisterInfor, RegisterReturn, LoginInfor, 
 from app.models.user import User
 from app.features.auth.hasher import Hasher
 from app.core.jwt import JWTHandler
-from app.core.exception_type import InvalidCredentialsError
+from app.core.response.exception_type import InvalidCredentialsError, InvalidUserInforError
 
-from fastapi import UploadFile
+from sqlalchemy.exc import IntegrityError
 
 class UserService:
     def __init__(self, repo: UserRepo):
@@ -14,6 +14,10 @@ class UserService:
     def register_user(self, register_infor: RegisterInfor):
         password_hash = Hasher.hash(register_infor.password)
         
+        existing_user = self.repo.get_by_email(register_infor.email)
+        
+        if existing_user:
+            raise InvalidCredentialsError("Email already exists")
         user = User(
             username=register_infor.username,
             email=register_infor.email,
