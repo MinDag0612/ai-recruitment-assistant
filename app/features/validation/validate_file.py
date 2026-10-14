@@ -5,8 +5,6 @@ from fastapi import File, HTTPException, UploadFile
 
 from app.core.response.exception_type import InvalidFileExtension
 
-
-
 class ValidateFile:
     ALLOWED_EXTENSIONS = {".pdf", ".docx"}
 
@@ -17,6 +15,6 @@ class ValidateFile:
         extension = Path(file.filename or "").suffix.lower()
 
         if extension not in ValidateFile.ALLOWED_EXTENSIONS:
-            raise InvalidFileExtension
+            raise InvalidFileExtension("Unsupport file extension: " + extension)
 
         return file

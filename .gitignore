@@ -43,3 +43,6 @@ dist/
 
 # Python version
 .python-version
+
+# Storage
+storage/*
