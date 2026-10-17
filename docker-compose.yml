@@ -15,5 +15,16 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: local-ollama
+    restart: unless-stopped
+    ports:
+      - "11435:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+
 volumes:
   db_data:
+  ollama_data:

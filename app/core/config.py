@@ -4,6 +4,8 @@ class Settings(BaseSettings):
     database_url: str
     storage_dir_root: str
     jwt_secret_key: str
+    ollama_base_url: str
+    ollama_timeout: int
 
     model_config = SettingsConfigDict(
         env_file=".env", # nơi lấy giá trị biến => chỉ cần viết thường lại tên trong .env

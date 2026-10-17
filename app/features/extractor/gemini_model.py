@@ -1,5 +1,5 @@
 from app.models.infor_extracted import InforExtractedBase
-from app.features.processor.model import Model
+from app.features.extractor.model import Model
 from app.core.variable import LLMModel, Prompt
 from app.models.infor_extracted import InforExtractedBase, InforExtractedJD, InforExtractedResume
 
